@@ -32,11 +32,11 @@ module RSpec
       end
 
       def member_type
-        attribute.options[:member_type]
+        attribute.member_type.primitive
       end
 
       def attribute_type
-        attribute.options[:primitive]
+        attribute.primitive
       end
 
       def attribute_exists?
@@ -45,7 +45,7 @@ module RSpec
 
       def type_correct?
         if @options[:member_type]
-          member_type == @options[:member_type] && attribute_type == @options[:type]
+          attribute_type == @options[:type] && member_type == @options[:member_type]
         elsif @options[:type]
           attribute_type == @options[:type]
         else
