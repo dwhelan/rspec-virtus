@@ -14,7 +14,7 @@ describe RSpec::Virtus::Matcher do
 
   describe '#matches?' do
     subject { instance.matches?(actual) }
-    let(:actual) { DummyVirtus }
+    let(:actual) { DummyVirtus.new }
 
     context 'successful match on attribute name' do
       it 'returns true' do

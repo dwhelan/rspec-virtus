@@ -12,8 +12,8 @@ module RSpec
         self
       end
 
-      def matches?(subject)
-        @subject = subject
+      def matches?(instance)
+        @subject = instance.class
         attribute_exists? && type_correct?
       end
 
