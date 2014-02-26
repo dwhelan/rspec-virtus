@@ -2,7 +2,8 @@ require 'spec_helper'
 require 'virtus'
 
 describe RSpec::Virtus::Matcher do
-  let(:instance) { described_class.new(attribute_name) }
+  let(:instance) { described_class.new(attribute_name, type) }
+  let(:type) { nil }
   let(:attribute_name) { :the_attribute }
 
   class DummyVirtus
@@ -23,9 +24,7 @@ describe RSpec::Virtus::Matcher do
     end
 
     context 'successful match on attribute name and type' do
-      before do
-        instance.of_type(String)
-      end
+      let(:type) { String }
 
       it 'returns true' do
         expect(subject).to eql(true)
@@ -34,10 +33,7 @@ describe RSpec::Virtus::Matcher do
 
     context 'successful match on attribute name, type and member_type' do
       let(:attribute_name) { :the_array_attribute }
-
-      before do
-        instance.of_type(Array[String])
-      end
+      let(:type) { Array[String] }
 
       it 'returns true' do
         expect(subject).to eql(true)
@@ -54,10 +50,7 @@ describe RSpec::Virtus::Matcher do
 
     context 'unsuccessful match on attribute name and type' do
       let(:attribute_name) { :something_else }
-
-      before do
-        instance.of_type(Integer)
-      end
+      let(:type) { Integer }
 
       it 'returns false' do
         expect(subject).to eql(false)
@@ -66,37 +59,10 @@ describe RSpec::Virtus::Matcher do
 
     context 'unsuccessful match on attribute name, type and member_type' do
       let(:attribute_name) { :the_array_attribute }
-
-      before do
-        instance.of_type(Array[Integer])
-      end
+      let(:type) { Array[Integer] }
 
       it 'returns false' do
         expect(subject).to eql(false)
-      end
-    end
-  end
-
-  describe '#of_type' do
-    subject { instance.of_type(String) }
-
-    it 'returns itsself so it can be chained' do
-      expect(subject).to eql(instance)
-    end
-
-    context "singular values" do
-      it 'adds an option to allow the type to be checked' do
-        options_type = subject.instance_variable_get(:@options)[:type]
-        expect(options_type).to eql(String)
-      end
-    end
-
-    context "arrays of values" do
-      subject { instance.of_type(Array[String]) }
-
-      it 'adds an option to allow the type to be checked' do
-        options_type = subject.instance_variable_get(:@options)[:type]
-        expect(options_type).to eql(Array[String])
       end
     end
   end

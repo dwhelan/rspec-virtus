@@ -1,14 +1,9 @@
 module RSpec
   module Virtus
     class Matcher
-      def initialize(attribute_name)
+      def initialize(attribute_name, type=nil)
         @attribute_name = attribute_name
-        @options = {}
-      end
-
-      def of_type(type)
-        @options[:type] = type
-        self
+        @options = { type: type }
       end
 
       def matches?(instance)
