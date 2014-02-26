@@ -4,8 +4,8 @@ require "rspec-virtus/version"
 
 module RSpec
   module Virtus
-    def have_attribute(attribute_name)
-      Matcher.new(attribute_name)
+    def have_attribute(attribute_name, type=nil)
+      Matcher.new(attribute_name, type)
     end
   end
 end

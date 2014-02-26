@@ -13,9 +13,22 @@ describe RSpec::Virtus::Matcher do
     attribute :the_array_attribute, Array[String]
   end
 
+  describe '#description' do
+    it 'includes attribute name' do
+      expect(instance.description).to include(attribute_name.to_s)
+    end
+
+    context 'with type' do
+      let(:type) { String }
+
+      it 'includes type name' do
+        expect(instance.description).to include(", String")
+      end
+    end
+  end
+
   describe '#matches?' do
-    subject { instance.matches?(actual) }
-    let(:actual) { DummyVirtus.new }
+    subject { instance.matches?(DummyVirtus.new) }
 
     context 'successful match on attribute name' do
       it 'returns true' do
@@ -68,18 +81,14 @@ describe RSpec::Virtus::Matcher do
   end
 
   describe '#failure_message' do
-    subject { instance.negative_failure_message }
-
     it 'tells you which attribute failed' do
-      expect(subject).to include(attribute_name.to_s)
+      expect(instance.failure_message).to include(attribute_name.to_s)
     end
   end
 
   describe '#negative_failure_message' do
-    subject { instance.negative_failure_message }
-
     it 'tells you which attribute failed' do
-      expect(subject).to include(attribute_name.to_s)
+      expect(instance.negative_failure_message).to include(attribute_name.to_s)
     end
   end
 end

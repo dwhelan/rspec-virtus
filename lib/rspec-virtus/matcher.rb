@@ -1,9 +1,10 @@
 module RSpec
   module Virtus
     class Matcher
-      def initialize(attribute_name, type=nil)
+      def initialize(attribute_name, type)
         @attribute_name = attribute_name
         @options = { type: type }
+        @type = type
       end
 
       def matches?(instance)
@@ -11,15 +12,21 @@ module RSpec
         attribute_exists? && type_correct?
       end
 
+      def description
+        "have attribute #{@attribute_name}#{@options[:type] ? ", #{@options[:type]}" : ""}"
+      end
+
       def failure_message
-        "expected #{@attribute_name} to be defined"
+        "should #{description}"
       end
 
       def negative_failure_message
-        "expected #{@attribute_name} not to be defined"
+        "should not #{description}"
       end
 
       private
+
+      attr_reader :type
 
       def attribute
         @subject.attribute_set[@attribute_name]
@@ -38,10 +45,10 @@ module RSpec
       end
 
       def type_correct?
-        if @options[:type].is_a?(Array)
-          attribute_type == Array && member_type == @options[:type][0]
-        elsif @options[:type]
-          attribute_type == @options[:type]
+        if type.is_a?(Array)
+          attribute_type == Array && member_type == type[0]
+        elsif type
+          attribute_type == type
         else
           true
         end
