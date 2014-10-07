@@ -48,7 +48,7 @@ module RSpec
         if type.is_a?(Array)
           attribute_type == Array && member_type == type[0]
         elsif type
-          attribute_type == type
+          attribute_type == type || attribute.class == type
         else
           true
         end
